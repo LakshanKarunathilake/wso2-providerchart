@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import VizG from "react-vizgrammar";
 import Selector from "../Selector/Selector";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 class BarChart extends Component {
   state = {
@@ -8,11 +9,16 @@ class BarChart extends Component {
     y_axis: "",
     chart_type: "bar",
     metadata: {},
-    staticDataSet: []
+    staticDataSet: [],
+    hasError: false
   };
-
+  /**
+   * ==============================
+   *          DUMMY DATA
+   * ==============================
+   */
   //Comment this method to stop mounting dummy data
-  componentWillMount() {
+  setDummyData = () => {
     this.state.metadata = {
       names: ["rpm", "torque", "horsepower", "EngineType"],
       types: ["linear", "linear", "linear", "ordinal"]
@@ -28,6 +34,14 @@ class BarChart extends Component {
       [17, 14, 18, "rotary"],
       [17, 14, 12, "rotary"]
     ];
+  };
+
+  componentWillMount() {
+    this.setDummyData(); // Comment this line to stop setting the dummy data
+
+    if (this.state.staticDataSet.length === 0) {
+      this.state.hasError = true;
+    }
   }
 
   componentDidMount() {
@@ -120,16 +134,35 @@ class BarChart extends Component {
       );
   };
 
-  render() {
-    console.log("Vals", this.state);
-    return (
-      <div>
+  renderSelector = () => {
+    if (this.state.hasError === false)
+      return (
         <Selector
           metadata={this.state.metadata}
           setAxisFields={this.setAxisFields}
           changeChartType={this.changeChartType}
           theme={this.props.theme}
         />
+      );
+  };
+
+  renderErrorMessage = () => {
+    if (this.state.hasError === true)
+      return (
+        <ErrorMessage
+          message={
+            "You have to enable either Siddhi Data provider configuration code segment or the dummy data set to preview this example"
+          }
+        />
+      );
+  };
+
+  render() {
+    console.log("Vals", this.state);
+    return (
+      <div>
+        {this.renderErrorMessage()}
+        {this.renderSelector()}
         {this.renderTheChart()}
       </div>
     );

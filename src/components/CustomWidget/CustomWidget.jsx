@@ -36,28 +36,42 @@ export class CustomWidget extends Widget {
    * ====================================================================================
    *   The following Code Line Handles the Siddhi Data Provider Connection to the widget
    * ====================================================================================
+   *
+   * Uncomment the code lines from #45 to #72 to enable provider
    */
 
-  componentWillMount() {
-    this.state.loading = true;
-    this.handleGraphUpdate();
-  }
+  //>>>>>>>>>>>>>>>Comment Starts>>>>>>>>>>>>>>>>>>>>>>>>>
 
-  //Call back function to handle the data provided by the Siddhi Data Provider
-  handleStats = stats => {
-    this.setState({ values: stats, loading: false });
-  };
+  // componentWillMount() {
+  //   this.state.loading = true;
+  //   this.handleGraphUpdate();
+  // }
 
-  handleGraphUpdate = () => {
-    const dataProviderConf = widgetConf.configs.providerConfig;
-    if (this.props.id != undefined) {
-      super
-        .getWidgetChannelManager()
-        .subscribeWidget(this.props.id, this.handleStats, dataProviderConf);
-    } else {
-      this.setState({ loading: false });
-    }
-  };
+  // //Call back function to handle the data provided by the Siddhi Data Provider
+  // handleStats = stats => {
+  //   try {
+  //     this.setState({ values: stats, loading: false });
+  //   } catch (error) {
+  //     console.log("Error caught in handling data");
+  //   }
+  // };
+
+  // handleGraphUpdate = () => {
+  //   const dataProviderConf = widgetConf.configs.providerConfig;
+  //   if (this.props.id != undefined) {
+  //     try {
+  //       super
+  //         .getWidgetChannelManager()
+  //         .subscribeWidget(this.props.id, this.handleStats, dataProviderConf);
+  //     } catch (error) {
+  //       console.log("Error caught in super call");
+  //     }
+  //   } else {
+  //     this.setState({ loading: false });
+  //   }
+  // };
+
+  //>>>>>>>>>>>>>>>Comment Ends>>>>>>>>>>>>>>>>>>>>>>>>>
 
   renderEmptyRecordsMessage = () => {
     return <PreLoader />;
